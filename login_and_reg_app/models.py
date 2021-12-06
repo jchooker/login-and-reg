@@ -1,6 +1,5 @@
-import bcrypt
+import bcrypt, re
 from django.db import models
-import re
 
 class UserManager(models.Manager):
     def user_validator(self, postData):
@@ -20,12 +19,14 @@ class UserManager(models.Manager):
     def login_validator(self, postData):
         errors={}
         user_test = User.objects.filter(email=postData['email2'])
-        if len(user_test) == 0:
-            errors['UserPWError'] = "Bad email and password combination"
-        if not bcrypt.checkpw(postData['pw2'].encode(), user_test[0].pw.encode()):
-            errors['badPW'] = "Bad email and password combination"
+        if user_test:
+            if not bcrypt.checkpw(postData['pw2'].encode(), user_test[0].pw.encode()):
+                errors['bad_pw_match'] = "Bad email-password combination"
+        else:
+            errors['no_such_user'] = "Bad email-password combination"
         return errors
 
+            
 # Create your models here.
 class User(models.Model):
     first_name=models.CharField(max_length=30)

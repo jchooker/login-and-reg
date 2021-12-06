@@ -56,7 +56,7 @@
                 {% endfor %}
             </ul>
             {% endif %}
-            <form action="/success" method='POST'>
+            <form action="/login_attempt" method='POST'>
                 {% csrf_token %}
                 <div class="row input-spacing">
                     <label for="email2" class="col">Email:</label>

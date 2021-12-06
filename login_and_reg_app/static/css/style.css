@@ -20,12 +20,19 @@
     min-height: 400px;
     margin: 0 auto;
     padding: 20px 20px 20px 20px;
+    /* display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center; */
+    background-color: darkkhaki;
+    border-radius: 10px;
+}
+
+#middle-section {
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
     align-items: center;
-    background-color: darkkhaki;
-    border-radius: 10px;
 }
 
 #wrapper2 img {
