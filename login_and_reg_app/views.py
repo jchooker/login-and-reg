@@ -11,7 +11,7 @@ def add_registrant(request):
         errors=User.objects.user_validator(request.POST)
         if len(errors) > 0:
             for key, value in errors.items():
-                messages.error(request, value)
+                messages.error(request, value, extra_tags='register')
             return redirect('/')
         temp_pass = request.POST['pw']
         pw_hash = bcrypt.hashpw(temp_pass.encode(), bcrypt.gensalt()).decode()
@@ -22,15 +22,14 @@ def add_registrant(request):
         email=request.POST['email'],
         pw=pw_hash)
 
-        request.session['last_user']=User.objects.last().id
+        request.session['user_id']=User.objects.last().id
         return redirect("/add_success")
     else:
         return redirect('/')
 
 
-def add_success(request):#when do I need to include 'id' parameter?
-    #do i need to have the same kind of errors dictionary that I had in add_registrant?
-    if 'user_id' not in request.session: #what are we attempting to do with 'user_id' here? just copied from class...
+def add_success(request):
+    if 'user_id' not in request.session: 
         messages.error(request, 'Only logged-in users can view this site')
         return redirect('/')
     user=User.objects.get(id=request.session['user_id'])
@@ -44,15 +43,10 @@ def login_attempt(request):
         errors=User.objects.login_validator(request.POST)
         if errors:
             for key, value in errors.items():
-                messages.error(request, value)
+                messages.error(request, value, extra_tags='login')
             return redirect('/')
-        request.session['last_user'] = User.objects.get(email=request.POST['email2'])[0].id
-        # user=User.objects.get(id=request.session['user_id'])
-        # context = {
-        #     'user':user
-        # }
-        # return render(request, "logged_in.html", context)
-        return redirect('/loggedin')
+        request.session['user_id'] = User.objects.get(email=request.POST['email2']).id
+        return redirect('/logged_in')
     else:
         return redirect('/')
 

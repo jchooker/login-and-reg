@@ -16,7 +16,9 @@
             {% if messages %}
             <ul>
                 {% for message in messages %}
+                {% if 'register' in message.tags %}
                 <li class='error-msg'>{{message}}</li>
+                {% endif %}
                 {% endfor %}
             </ul>
             {% endif %}
@@ -52,7 +54,9 @@
             {% if messages %}
             <ul>
                 {% for message in messages %}
+                {% if 'login' in message.tags %}
                 <li class='error-msg'>{{message}}</li>
+                {% endif %}
                 {% endfor %}
             </ul>
             {% endif %}
